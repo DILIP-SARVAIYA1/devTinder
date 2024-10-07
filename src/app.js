@@ -2,21 +2,23 @@ const express = require("express");
 
 const app = express();
 
-app.post("/user", (req, res) => {
-  console.log(req.params);
-  res.send("data saved to the database");
+app.use("/admin", (req, res, next) => {
+  console.log("Admin data access request hit the API");
+  const token = "abc";
+  if (token === "abc") {
+    // res.send("All the data sent");
+    next();
+  } else {
+    res.status(404).send("You are not Admin");
+  }
 });
-app.get("/user/:userId/:secondId", (req, res) => {
-  console.log(req.params);
-  res.send({ firstName: "dilip", lastName: "Sarvaiya" });
+app.get("/admin/dashboard", (req, res) => {
+  res.send("You are on dashboard");
 });
-app.delete("/user", (req, res) => {
-  res.send("data deleted successfully");
+app.get("/admin/portfolio", (req, res) => {
+  res.send("You are in PortFolio");
 });
-// app.use("/", (req, res) => {
-//   res.send("Hello from dashboard");
-// });
 
 app.listen(7777, () => {
-  console.log("server running on port 7777");
+  console.log("Server running on port number = 7777");
 });
