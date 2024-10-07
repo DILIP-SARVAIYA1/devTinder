@@ -1,16 +1,11 @@
 const express = require("express");
+const { adminAuth } = require("./middlewares/auth");
 
 const app = express();
+app.use("/admin", adminAuth);
 
-app.use("/admin", (req, res, next) => {
-  console.log("Admin data access request hit the API");
-  const token = "abc";
-  if (token === "abc") {
-    // res.send("All the data sent");
-    next();
-  } else {
-    res.status(404).send("You are not Admin");
-  }
+app.post("/user", (req, res) => {
+  res.send("User api called");
 });
 app.get("/admin/dashboard", (req, res) => {
   res.send("You are on dashboard");
