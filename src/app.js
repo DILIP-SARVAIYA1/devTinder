@@ -6,8 +6,9 @@ const app = express();
 
 connectDB()
   .then(() => {
+    console.log("Database connection successfully established");
     app.listen(7777, () => {
-      console.log("Server running on port number = 7777");
+      console.log("Server is successfully listening on port number = 7777");
     });
   })
   .catch((err) => {
