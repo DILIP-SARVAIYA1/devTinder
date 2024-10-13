@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema(
         "https://macromissionary.com/wp-content/uploads/2021/10/dummy-avatar-2.jpg",
     },
     skills: {
-      type: [],
+      type: [String],
     },
   },
   {
