@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema(
   {
@@ -19,11 +20,23 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
       unique: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error(
+            "This Email = " + value + " is not valid, Please enter valid Email"
+          );
+        }
+      },
     },
     password: {
       type: String,
       min: 8,
       required: true,
+      validate(value) {
+        if (!validator.isStrongPassword(value)) {
+          throw new Error("Please enter strong password");
+        }
+      },
     },
     age: {
       type: Number,
@@ -42,7 +55,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       default:
         "https://macromissionary.com/wp-content/uploads/2021/10/dummy-avatar-2.jpg",
+      validate(value) {
+        if (!validator.isURL(value)) {
+          throw new Error("Please enter valid photo URL");
+        }
+      },
     },
+
     skills: {
       type: [String],
     },
