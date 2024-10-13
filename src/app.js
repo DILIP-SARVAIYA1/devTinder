@@ -13,7 +13,7 @@ app.post("/signup", async (req, res) => {
     await user.save();
     res.send("User data successfully added 😊");
   } catch (err) {
-    res.status(400).send("data not successfully saved!!! 😭");
+    res.status(400).send("data not successfully saved!!! 😭 " + err);
   }
 });
 //get data from the database
@@ -59,16 +59,19 @@ app.delete("/user", async (req, res) => {
 
 //Update the data from the database
 app.patch("/user", async (req, res) => {
+  const userId = req.body.userId;
   const data = req.body;
-  const user = await User.findByIdAndUpdate(data.id, data);
+
   try {
-    if (!user) {
-      res.status(404).send("User not found");
-    } else {
-      res.send("User updated successfully");
-    }
-  } catch (error) {
-    res.status(400).send("Something went wrong");
+    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
+      returnDocument: "before",
+      runValidators: true,
+    });
+    console.log(user);
+
+    res.send("User updated successfully");
+  } catch (err) {
+    res.status(400).send("Something went wrong " + err.message);
   }
 });
 
