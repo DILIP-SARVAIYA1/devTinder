@@ -1,14 +1,25 @@
-const adminAuth = (req, res, next) => {
-  console.log("Admin data access request hit the API");
-  const token = "abc";
-  if (token === "abc") {
-    // res.send("All the data sent");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
+
+const userAuth = async (req, res, next) => {
+  try {
+    const { token } = req.cookies;
+    if (!token) {
+      throw new Error("Invalid token !!!!");
+    }
+    const decodedObj = jwt.verify(token, "DilipSarvaiya@123");
+    const { _id } = decodedObj;
+    const user = await User.findById(_id);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    req.user = user;
     next();
-  } else {
-    res.status(401).send("You are not Admin");
+  } catch (err) {
+    res.status(404).send("ERROR : " + err.message);
   }
 };
 
 module.exports = {
-  adminAuth,
+  userAuth,
 };
