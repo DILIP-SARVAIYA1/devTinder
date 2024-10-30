@@ -10,18 +10,18 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
     const logInUser = req.user;
     res.send(logInUser);
   } catch (err) {
-    res.status(400).send("ERROR : " + err.message);
+    res.status(401).send("ERROR : " + err.message);
   }
 });
 profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
   try {
     const logInUser = req.user;
     if (!validateEditProfileData(req)) {
-      throw new Error("Update req is not valid!!!");
+      send.status(400).send("Update req is not valid!!!");
     }
     Object.keys(req.body).forEach((key) => (logInUser[key] = req.body[key]));
     await logInUser.save();
-    res.send(`${logInUser.firstName} Your profile updated successfully`);
+    res.send(logInUser);
   } catch (err) {
     res.status(400).send("ERROR : " + err);
   }
